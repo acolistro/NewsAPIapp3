@@ -21,6 +21,7 @@ import com.example.newsapiapp.model.Constants;
 import com.example.newsapiapp.model.Article;
 import com.example.newsapiapp.model.Headline;
 import com.example.newsapiapp.model.News;
+import com.example.newsapiapp.model.Source;
 import com.example.newsapiapp.service.IApiHelper;
 import com.example.newsapiapp.service.ServiceHelper;
 import com.example.newsapiapp.utils.MyApplication;
@@ -37,6 +38,8 @@ import io.reactivex.schedulers.Schedulers;
 public class ArticlesRepository {
 
     public static ArticlesRepository articlesRepository;
+    static IApiHelper iApiHelper;
+    static CompositeDisposable compositeDisposable;
 
 
         public synchronized static ArticlesRepository getInstance() {
@@ -75,63 +78,35 @@ public class ArticlesRepository {
                         }
                     }));
 
-//                .subscribe(new Observer<MoviesResponse>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(MoviesResponse moviesResponse) {
-//                        moviesResponseLiveData.setValue(moviesResponse);
-//                        Log.i("Movies","Value is "+moviesResponse.getResults().get(1).getOriginalTitle());
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        ToastUtils.showError(NetworkChecker.getErrorMessage(e), MyApplication.getAppContext());
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
             return headlineLiveData;
         }
 
-//        //TODO need getArticle method to connect with api helper method
-//        public MutableLiveData<Article> getArticle(String url){
-//            final MutableLiveData<Article> articleMutableLiveData = new MutableLiveData<>();
-//            IApiHelper iRestHelper = ServiceHelper.getRestAPIHelper();
-//            iRestHelper.getArticle(url)
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Observer<Article>() {
-//                        @Override
-//                        public void onSubscribe(Disposable d) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onNext(Article article) {
-//                            articleMutableLiveData.setValue(article);
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onComplete() {
-//
-//                        }
-//                    });
-//            return articleMutableLiveData;
-//        }
+
+        public MutableLiveData<Source> getSource(String sources) {
+            final MutableLiveData<Source> sourceMutableLiveData = new MutableLiveData<>();
+            compositeDisposable.add(
+            iApiHelper.getSource(sources, Constants.API_KEY)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<Source>() {
+                        @Override
+                        public void accept(Source source) throws Exception {
+                            isLoading.setValue(true);
+                            sourceMutableLiveData.setValue(source);
+
+//                            Log.i("Articles2",""+source.getId().getArticles());
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable e) throws Exception {
+                            //   ToastUtils.showError(NetworkChecker.getErrorMessage(e), MyApplication.getAppContext());
+                            isLoading.setValue(false);
+                            Log.i("Articles2",""+e.getLocalizedMessage());
+
+                        }
+                    }));
+            return sourceMutableLiveData;
+        }
 
     }
 

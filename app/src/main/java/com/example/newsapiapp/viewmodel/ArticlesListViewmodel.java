@@ -10,6 +10,7 @@ import com.example.newsapiapp.model.Article;
 import com.example.newsapiapp.model.Constants;
 import com.example.newsapiapp.model.Headline;
 import com.example.newsapiapp.model.News;
+import com.example.newsapiapp.model.Source;
 import com.example.newsapiapp.repository.ArticlesRepository;
 
 public class ArticlesListViewmodel extends AndroidViewModel  {
@@ -25,9 +26,9 @@ public class ArticlesListViewmodel extends AndroidViewModel  {
         return articlesRepository.getArticlesList();
     }
 
-//    public LiveData<Article> getArticle(String url){
-////        return articlesRepository.getArticle(url);
-//    }
+    public LiveData<Source> getSource(String sources){
+        return articlesRepository.getSource(sources);
+    }
 
     public LiveData<Boolean> getIsLoading(){
         LiveData<Boolean> isLoading=articlesRepository.isLoading;
