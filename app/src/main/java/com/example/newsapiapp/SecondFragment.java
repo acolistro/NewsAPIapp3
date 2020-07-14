@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.BundleCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,58 +27,21 @@ import com.example.newsapiapp.viewmodel.SharedViewModel;
 public class SecondFragment extends Fragment {
 
     ArticlesListViewmodel articlesListViewmodel;
-    SharedViewModel sharedViewModel;
-    ImageView articleImage;
-    TextView tvTitle,description, author, publishedAt;
-    @Override
+
+   @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
-    ) {
+   ) {
+       return inflater.inflate(R.layout.activity_details, container, false);
+   }
 
-        //int movieID=getArguments().getInt("ID");
-        return inflater.inflate(R.layout.activity_details, container, false);
-    }
-
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-//        image= getActivity().findViewById(R.id.image_item_article);
-        articleImage= getActivity().findViewById(R.id.articleImage);
-        tvTitle= getActivity().findViewById(R.id.tvTitle);
-        description= getActivity().findViewById(R.id.description);
-        author= getActivity().findViewById(R.id.author);
-        publishedAt= getActivity().findViewById(R.id.publishedAt);
-
-        sharedViewModel= ViewModelProviders.of(this).get(SharedViewModel.class);
-        SharedViewModel model = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
-        model.getSelected().observe(getViewLifecycleOwner(), new Observer<ArticleUrl>() {
-            @Override
-            public void onChanged(ArticleUrl articleUrl) {
-                Log.i("Values",""+articleUrl.getArticleUrl());
-             //   observablesDetails(articleUrl.getArticleUrl());
-            }
-        });
-    }
-    public void observablesDetails(final String url){
-        articlesListViewmodel= ViewModelProviders.of(this).get(ArticlesListViewmodel.class);
-//        articlesListViewmodel.getArticle(url).observe(getViewLifecycleOwner(), new Observer<Article>() {
-//            @Override
-//            public void onChanged(Article article) {
-//
-//
-//                Toast.makeText(getActivity(), ""+article.getAuthor(), Toast.LENGTH_SHORT).show();
-//
-//
-//                Glide.with(getActivity()).load(article.getUrlToImage());
-//                Glide.with(getActivity()).load(article.getUrlToImage());
-//                tvTitle.setText(article.getTitle());
-//                description.setText(article.getDescription());
-//                author.setText(article.getAuthor());
-//                publishedAt.setText(article.getPublishedAt());
-//
-//            }
-//        });
-    }
+   public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+       super.onViewCreated(view, savedInstanceState);
+       view.findViewById(R.id.button_second).setOnClickListener((view) {
+           NavHostFragment.findNavController(SecondFragment.this)
+               .navigate(R.id.action_SecondFragment_to_FirstFragment);
+       });
+   );
+   }
 }
