@@ -21,6 +21,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.bumptech.glide.Glide;
 import com.example.newsapiapp.model.Article;
 import com.example.newsapiapp.model.ArticleUrl;
+import com.example.newsapiapp.model.Source;
 import com.example.newsapiapp.viewmodel.ArticlesListViewmodel;
 import com.example.newsapiapp.viewmodel.SharedViewModel;
 
@@ -38,10 +39,20 @@ public class SecondFragment extends Fragment {
 
    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
        super.onViewCreated(view, savedInstanceState);
-       view.findViewById(R.id.button_second).setOnClickListener((view) {
-           NavHostFragment.findNavController(SecondFragment.this)
-               .navigate(R.id.action_SecondFragment_to_FirstFragment);
+       articlesListViewmodel = new ViewModelProvider(requireActivity()).get(ArticlesListViewmodel.class);
+//               view.findViewById(R.id.button_second).setOnClickListener((view) {
+//           NavHostFragment.findNavController(SecondFragment.this)
+//               .navigate(R.id.action_SecondFragment_to_FirstFragment);
+//       });
+
+   }
+
+   public void getObservableSourceId(final String sources) {
+       articlesListViewmodel.getSource(sources).observe(getViewLifecycleOwner(), new Observer<Source>() {
+           @Override
+           public void onChanged(Source source) {
+
+           }
        });
-   );
    }
 }

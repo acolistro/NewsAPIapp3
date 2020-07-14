@@ -23,6 +23,7 @@ import com.example.newsapiapp.adapter.ArticleAdapter;
 import com.example.newsapiapp.model.ArticleUrl;
 import com.example.newsapiapp.model.Headline;
 import com.example.newsapiapp.model.News;
+import com.example.newsapiapp.model.Source;
 import com.example.newsapiapp.utils.NetworkChecker;
 import com.example.newsapiapp.viewmodel.ArticlesListViewmodel;
 import com.example.newsapiapp.viewmodel.SharedViewModel;
@@ -124,6 +125,14 @@ public class FirstFragment extends Fragment  {
         ArticleUrl articleUrl= new ArticleUrl();
         articleUrl.setArticleUrl(mPos);
         model.select(articleUrl);
+        NavHostFragment.findNavController(FirstFragment.this)
+                .navigate(R.id.action_FirstFragment_to_SecondFragment);
+    }
+
+    public void gotoSource(final String aSource) {
+        Source source= new Source();
+        source.setId(aSource);
+        model.select(source);
         NavHostFragment.findNavController(FirstFragment.this)
                 .navigate(R.id.action_FirstFragment_to_SecondFragment);
     }
